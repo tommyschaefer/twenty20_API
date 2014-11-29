@@ -14,8 +14,12 @@ describe Client do
       @client = Client.new
     end
 
-    it "returns a hash" do
+    it "returns an Array" do
       expect(@client.get_featured_items.class).to eq(Array)
+    end
+
+    it "returns an Array of Item objects" do
+      expect(@client.get_featured_items[0].class).to eq(Item)
     end
 
     it "returns error if status is not 200" do

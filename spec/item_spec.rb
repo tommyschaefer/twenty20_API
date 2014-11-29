@@ -1,16 +1,42 @@
 require "spec_helper"
 
-describe ItemCollection do
-  describe "items" do
-    it "should have an array of items" do
-      item_collection = ItemCollection.new
-      expect(item_collection.items.class).to eq(Array)
+describe Item do
+  describe "category" do
+    it "returns the items category" do
+      attributes = {"caption" => "mobile photography ftw"}
+      item = Item.new(attributes)
+      expect(item.caption).to eq("mobile photography ftw")
+    end
+
+    it "returns nil when not present" do
+      item = Item.new
+      expect(item.caption).to eq(nil)
     end
   end
+ 
+  describe "id" do
+    it "returns the items id " do
+      attributes = {"id" => 1}
+      item = Item.new(attributes)
+      expect(item.id).to eq(1)
+    end
 
-  describe "initialize_items" do
-    it "should create objects in array into items" do
-      
+    it "returns nil when not present" do
+      item = Item.new
+      expect(item.id).to eq(nil)
+    end
+  end 
+ 
+  describe "source_name" do
+    it "returns the items id " do
+      attributes = {"source_name" => "Instagram"}
+      item = Item.new(attributes)
+      expect(item.source_name).to eq("Instagram")
+    end
+
+    it "returns nil when not present" do
+      item = Item.new
+      expect(item.source_name).to eq(nil)
     end
   end
 end
