@@ -8,12 +8,23 @@ class Client
   def get_featured_items
     featured_route = "items/featured"
     featured_params = "?featured=true"
-    resource = BASE_URI + featured_route + featured_params
+    resource = build_route(featured_route, featured_params) 
     response = self.class.get(resource)
     if(response.code == 200)
-      response.parsed_response["items"]
       item_collection = to_item_collection(response)
       item_collection
+    else
+      "Error"
+    end
+  end
+
+  def get_challenges
+    challenges_route = "/challenges/open-for-submissions"
+    resource = build_route(challenges_route)
+    response = self.class.get(resource) 
+    if(response.code == 200)
+      challenge_collection = to_challenge_collection(response)
+      challenge_collection
     else
       "Error"
     end
@@ -23,6 +34,15 @@ class Client
 
   def to_item_collection(response)  #creates Item objects out of each element in the response object and returns this new array
     response.parsed_response["items"].collect {|item| Item.new(item)}
+  end
+
+  def to_challenge_collection(response)
+    response.parsed_response["challenges"].collect {|challenge| Challenge.new(challenge)}
+  end
+
+  def build_route(uri, params = "")
+    route = BASE_URI + uri + params
+    route
   end
 end
 
@@ -40,5 +60,19 @@ class Item
     @user_avatar_url = attributes["avatar"]
     @username = attributes["username"]
     @display_name = attributes["display_name"]
+  end
+end
+
+
+class Challenge
+  attr_reader :slug, :name, :description, :starts_at, :ends_at, :submission_count
+  
+  def initialize(attributes = {})
+    @slug = attributes["slug"] 
+    @name = attributes["name"]
+    @description = attributes["description"]
+    @starts_at = attributes["starts_at"]
+    @ends_at = attributes["ends_at"]
+    @submission_count = attributes["submission_count"]
   end
 end

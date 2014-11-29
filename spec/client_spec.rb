@@ -33,4 +33,15 @@ describe Client do
     it "doesnt return error if status is 200" do
     end
   end
+
+  describe "get_challenges" do
+    before(:all) do
+      @client = Client.new
+    end
+
+    it "should return an array of challenge objects" do
+      response = @client.get_challenges
+      expect(response.class).to eq(Array);
+    end
+  end
 end
