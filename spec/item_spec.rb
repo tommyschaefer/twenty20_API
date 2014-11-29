@@ -12,6 +12,11 @@ describe Item do
       item = Item.new
       expect(item.caption).to eq(nil)
     end
+
+    it "should be immutable" do
+      item = Item.new
+      expect{item.category = "not allowed"}.to raise_error(NoMethodError) 
+    end
   end
  
   describe "id" do
