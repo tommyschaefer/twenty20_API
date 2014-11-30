@@ -14,7 +14,7 @@ module Twenty20
       resource = build_route(featured_route, featured_params) 
       response = self.class.get(resource)
       if(response.code == 200)
-        item_collection = to_item_collection(response)
+        item_collection = to_collection(response, "item")
         item_collection
       else
         "Error"
@@ -26,7 +26,7 @@ module Twenty20
       resource = build_route(challenges_route)
       response = self.class.get(resource) 
       if(response.code == 200)
-        challenge_collection = to_challenge_collection(response)
+        challenge_collection = to_collection(response, "challenge")
         challenge_collection
       else
         "Error"
@@ -35,12 +35,11 @@ module Twenty20
 
     private
 
-    def to_item_collection(response)  #creates Item objects out of each element in the response object and returns this new array
-      response.parsed_response["items"].collect {|item| Item.new(item)}
-    end
-
-    def to_challenge_collection(response)
-      response.parsed_response["challenges"].collect {|challenge| Challenge.new(challenge)}
+    def to_collection(response, collection_class)
+      response.parsed_response[collection_class + "s"].collect do |e|
+        o = Object.const_get("Twenty20::" + collection_class.capitalize) #creates new array full of collection_class object (i.e. Items, Challenges)
+        o.new(e)
+      end
     end
 
     def build_route(uri, params = "")
