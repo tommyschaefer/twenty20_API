@@ -8,26 +8,38 @@ module Twenty20
     include HTTParty
     BASE_URI = "https://api-v2.twenty20.com/"
     
-    def get_featured_items
+    def get_featured_items(&block)
       featured_route = "items/featured"
       featured_params = "?featured=true"
       resource = build_route(featured_route, featured_params) 
       response = self.class.get(resource)
       if(response.code == 200)
         item_collection = to_collection(response, "item")
-        item_collection
+        if(block_given?)
+          item_collection.each do |item|
+            block.call(item)
+          end
+        else
+          item_collection
+        end
       else
         "Error"
       end
     end
 
-    def get_challenges
+    def get_challenges(&block)
       challenges_route = "/challenges/open-for-submissions"
       resource = build_route(challenges_route)
       response = self.class.get(resource) 
       if(response.code == 200)
         challenge_collection = to_collection(response, "challenge")
-        challenge_collection
+        if block_given?
+          challenge_collection.each do |challenge|
+            block.call(challenge)
+          end 
+        else
+          challenge_collection
+        end
       else
         "Error"
       end
