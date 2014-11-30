@@ -29,7 +29,7 @@ API client for interacting with Twenty20s internal API.
 Instantiate a new client
 
 ```ruby
-  client = Client.new
+  client = Twenty20::Client.new
 ```
 Get Featured items
   
