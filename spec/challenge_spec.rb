@@ -1,11 +1,11 @@
 require "spec_helper"
 
-describe Challenge do
+describe Twenty20::Challenge do
   describe "slug" do
     
     before(:all) do
       attributes = {"slug" => "technology-challenge"}
-      @challenge = Challenge.new(attributes)
+      @challenge = Twenty20::Challenge.new(attributes)
     end
     
     it "returns the slug for the challenge" do
@@ -20,7 +20,7 @@ describe Challenge do
   describe "name" do
     it "returns the name of the challenge" do
       attributes = {"name" => "technology"}
-      challenge = Challenge.new(attributes)
+      challenge = Twenty20::Challenge.new(attributes)
       expect(challenge.name).to eq("technology")
     end
   end
@@ -28,7 +28,7 @@ describe Challenge do
   describe "description" do
     it "returns the description of the challenge" do
       attributes = {"description" => "really cool challenge"}
-      challenge = Challenge.new(attributes)
+      challenge = Twenty20::Challenge.new(attributes)
       expect(challenge.description).to eq("really cool challenge")
     end
   end

@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe Client do
+describe Twenty20::Client do
 
   describe "BASE_URI" do
     it "returns the base uri for the api" do
-      expect(Client::BASE_URI).to eq("https://api-v2.twenty20.com/")
+      expect(Twenty20::Client::BASE_URI).to eq("https://api-v2.twenty20.com/")
     end
   end
 
   describe "get_featured_items" do
 
     before(:all) do
-      @client = Client.new
+      @client = Twenty20::Client.new
     end
 
     it "returns an Array" do
@@ -19,13 +19,13 @@ describe Client do
     end
 
     it "returns an Array of Item objects" do
-      expect(@client.get_featured_items[0].class).to eq(Item)
+      expect(@client.get_featured_items[0].class).to eq(Twenty20::Item)
     end
 
     it "returns error if status is not 200" do
       fake_response = double
       fake_response.stub(:code) { 400 }
-      Client.stub(:get)  { fake_response }
+      Twenty20::Client.stub(:get)  { fake_response }
       response = @client.get_featured_items
       expect(response).to eq("Error")
     end
@@ -36,7 +36,7 @@ describe Client do
 
   describe "get_challenges" do
     before(:all) do
-      @client = Client.new
+      @client = Twenty20::Client.new
     end
 
     it "should return an array of challenge objects" do
