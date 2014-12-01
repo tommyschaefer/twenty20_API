@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["afwheeler92@gmail.com"]
   spec.summary       =  "explore twenty20" 
   spec.description   =  "API client to explore Twenty20"
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/alexwheeler/twenty20_API"
   spec.license       = "MIT"
 
   # spec.files         = `git ls-files -z`.split("\x0")
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'httparty'
+  spec.add_dependency 'httparty', "~> 0.13"
 
   spec.add_development_dependency "bundler", "~> 1.7"
   spec.add_development_dependency "rake", "~> 10.0"
