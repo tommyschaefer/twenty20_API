@@ -1,11 +1,14 @@
 require 'twenty20'
 require 'webmock/rspec'
 require 'vcr'
+
+Dir['./spec/support/**/*.rb'].sort.each { |f| require f }
+
 WebMock.disable_net_connect!(allow_localhost: true)
 
 VCR.configure do |c|
-    c.cassette_library_dir = 'fixtures/vcr_cassettes'
-    c.hook_into :webmock # or :fakeweb
+  c.cassette_library_dir = 'fixtures/vcr_cassettes'
+  c.hook_into :webmock # or :fakeweb
 end
 
 
