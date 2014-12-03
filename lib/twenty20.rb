@@ -1,4 +1,5 @@
 require "twenty20/version"
+require "twenty20/api_object"
 require "twenty20/item"
 require "twenty20/challenge"
 require "httparty"
