@@ -1,55 +1,36 @@
 require 'spec_helper'
 
 describe Twenty20::Client do
-  describe "BASE_URI" do
-    it "returns the base uri for the api" do
-      expect(Twenty20::Client::BASE_URI).to eq("https://api-v2.twenty20.com/")
+  let(:instance) { described_class.new }
+
+  describe 'BASE_URI' do
+    it 'returns the base uri for the api' do
+      expect(described_class::BASE_URI).to eq('https://api-v2.twenty20.com/')
     end
   end
 
-  describe "get_featured_items" do
-    before(:all) do
-      @client = Twenty20::Client.new
-    end
-
-    it "returns an Array" do
-      VCR.use_cassette('get_featured_items') do
-        expect(@client.get_featured_items.class).to eq(Array)
+  { get_featured_items: Twenty20::Item,
+    get_challenges: Twenty20::Challenge }.each do |method, response_type|
+    describe "##{method}" do
+      around(:each) do |example|
+        VCR.use_cassette(method.to_s) do
+          example.run
+        end
       end
-    end
 
-    it "returns an Array of Item objects" do
-      VCR.use_cassette('get_featured_items') do
-        expect(@client.get_featured_items[0].class).to eq(Twenty20::Item)
+      it 'returns an Array' do
+        expect(instance.send(method)).to be_a(Array)
       end
-    end
 
-    it "can accept a block and do something cool like push challenges into a new array" do
-      val = []
-      VCR.use_cassette("get_featured_items") do
-        @client.get_featured_items {|item| val.push(item)}
-        expect(val.empty?).to_not eq(true)
+      it 'returns an Array of Item objects' do
+        expect(instance.send(method)
+          .all? { |e| e.is_a?(response_type) }).to be_truthy
       end
-    end
-  end
 
-  describe "get_challenges" do
-    before(:all) do
-      @client = Twenty20::Client.new
-    end
-
-    it "should return an array of challenge objects" do
-      VCR.use_cassette("get_challenges") do
-        response = @client.get_challenges
-        expect(response.class).to eq(Array);
-      end
-    end
-
-    it "can accept a block and do something cool like push challenges into a new array" do
-      VCR.use_cassette("get_challenges") do 
+      it 'handles blocks correctly' do
         val = []
-        @client.get_challenges {|challenge|  val.push(challenge)}
-      expect(val.empty?).to_not eq(true)
+        instance.send(method) { |e| val.push(e) }
+        expect(val).not_to be_empty
       end
     end
   end
