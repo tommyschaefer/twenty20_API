@@ -1,5 +1,9 @@
 module Twenty20
   class ApiObject
+    def self.attributes
+      []
+    end
+
     def initialize(attributes = {})
       self.class.attributes.each do |attr|
         instance_attr = "@#{attr}"
