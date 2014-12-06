@@ -1,10 +1,12 @@
 require 'spec_helper'
 
-RSpec.shared_examples 'an API object' do
+RSpec.shared_examples 'an API object' do |options|
   let(:attributes) { {} }
   let(:instance) { described_class.new(attributes) }
 
-  described_class.attributes.each do |method|
+  options ||= {}
+
+  options.fetch(:with, []).each do |method|
     describe "##{method}" do
       it "returns the item's #{method}" do
         attributes.merge!(method => 'foo')
